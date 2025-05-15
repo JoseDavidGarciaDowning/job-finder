@@ -1,3 +1,42 @@
 @import "tailwindcss";
 
 @tailwind utilities;
+
+/* Estilos globales */
+html,
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+@theme {
+  --color-midu-lol: #00f;
+  --color-jose: #ff0000;
+}
+
+ion-tab-bar {
+  --background: white; /* Aplica fondo blanco dentro del Shadow DOM */
+}
+
+/* También puedes asegurarte de que el fondo de los botones sea blanco */
+ion-tab-bar > ion-tab-button {
+  --background: white; /* Para los hijos directos */
+}
+
+ion-tab-button {
+  --color-selected: #40189d; /* Cambia el color del icono y del texto cuando el tab está activo */
+}
+
+ion-tab-button {
+  --icon-size: 28px; /* Esto sí afecta el tamaño del icono */
+}
+
+ion-tab-button ion-label {
+  font-size: 12px !important; /* Aumenta tamaño del texto */
+}
+
+ion-header {
+  background-color: #f9f9f9 !important;
+}

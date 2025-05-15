@@ -1,29 +1,16 @@
 import { Redirect, Route } from "react-router-dom";
-import {
-  IonApp,
-  IonIcon,
-  IonLabel,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-  setupIonicReact,
-} from "@ionic/react";
+import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { ellipse, square, triangle } from "ionicons/icons";
-import Tab1 from "./pages/Tab1";
-import Tab2 from "./pages/Tab2";
-import Tab3 from "./pages/Tab3";
 
 /* Core CSS required for Ionic components to work properly */
-// import "@ionic/react/css/core.css";
+import "@ionic/react/css/core.css";
 
-// /* Basic CSS for apps built with Ionic */
+/* Basic CSS for apps built with Ionic */
 // import "@ionic/react/css/normalize.css";
 // import "@ionic/react/css/structure.css";
 // import "@ionic/react/css/typography.css";
 
-// /* Optional CSS utils that can be commented out */
+/* Optional CSS utils that can be commented out */
 // import "@ionic/react/css/padding.css";
 // import "@ionic/react/css/float-elements.css";
 // import "@ionic/react/css/text-alignment.css";
@@ -42,58 +29,43 @@ import Tab3 from "./pages/Tab3";
 // import "@ionic/react/css/palettes/dark.class.css";
 // import "@ionic/react/css/palettes/dark.system.css";
 
-/* Theme variables */
-// import "./theme/variables.css";
-// import Login from "./pages/Login";
-import Login2 from "./pages/Login2";
-import Login3 from "./pages/Login3";
+//  Theme variables
+import "./theme/variables.css";
+
+import SelectRole from "./pages/SelectRole";
+import Welcome from "./pages/Welcome";
+import ApplicantRoutes from "./routes/ApplicantRoutes";
+import LoginEmpresa from "./auth/pages/LoginEmpresa";
+import LoginApplicant from "./auth/pages/LoginApplicant";
+import RegisterEmpresa from "./auth/pages/RegisterEmpresa";
+import RegisterApplicant from "./auth/pages/RegisterApplicant";
+import FormApplicant from "./applicant/components/FormApplicant";
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        {/* Rutas que NO deben tener tabs */}
-        <Route exact path="/login2">
-          <Login3 />
-        </Route>
+      <IonRouterOutlet animated={true}>
+        {/* Rutas públicas */}
+        <Route exact path="/login/company" component={LoginEmpresa} />
+        <Route exact path="/login/applicant" component={LoginApplicant} />
+        <Route exact path="/register/company" component={RegisterEmpresa} />
+        <Route exact path="/register/applicant" component={RegisterApplicant} />
+        <Route exact path="/form" component={FormApplicant} />
+        <Route exact path="/select" component={SelectRole} />
+        <Route exact path="/welcome" component={Welcome} />
 
-        {/* Rutas que SI deben tener tabs */}
-        {/* <Route path="/tabs">
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/tabs/tab1">
-                <Tab1 />
-              </Route>
-              <Route exact path="/tabs/tab2">
-                <Tab2 />
-              </Route>
-              <Route path="/tabs/tab3">
-                <Tab3 />
-              </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="tab1" href="/tabs/tab1">
-                <IonIcon icon={triangle} />
-                <IonLabel>Tab 1</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab2" href="/tabs/tab2">
-                <IonIcon icon={ellipse} />
-                <IonLabel>Tab 2</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="tab3" href="/tabs/tab3">
-                <IonIcon icon={square} />
-                <IonLabel>Tab 3</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </Route> */}
-
-        {/* Redireccionar root a login */}
+        {/* Redirección raíz */}
         <Route exact path="/">
-          <Redirect to="/login" />
+          <Redirect to="/welcome" />
         </Route>
+
+        {/* Rutas protegidas por rol */}
+        {/* Applicant */}
+        <Route path="/applicant" component={ApplicantRoutes} />
+        {/* Company */}
+        {/* <Route path="/company" component={CompanyRoutes} /> */}
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
