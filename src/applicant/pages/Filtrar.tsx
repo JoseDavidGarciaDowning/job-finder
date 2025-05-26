@@ -6,16 +6,16 @@ const Filtrar: React.FC = () => {
     const [sliderValue, setSliderValue] = useState(13);
     
  
-    const [selectedJobType, setSelectedJobType] = useState('fulltime');
+    const [selectedJobType, setSelectedJobType] = useState('TIEMPO COMPLETO');
     
-    // Calcular el porcentaje para el estilo del slider
+
     const percentage = ((sliderValue - 13) / (25 - 13)) * 100;
 
     return (
         <IonPage>
             <IonHeader>
                 <IonToolbar>
-                    <IonTitle>Filter</IonTitle>
+                    <IonTitle>Filtrar Busqueda</IonTitle>
                 </IonToolbar>
             </IonHeader>
             <IonContent className="ion-padding bg-gray-100">
@@ -27,12 +27,12 @@ const Filtrar: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                             </svg>
                         </button>
-                        <h1 className="text-xl font-medium text-center flex-1 pr-7">Filter</h1>
+                        <h1 className="text-xl font-medium text-center flex-1 pr-7">Filtrar Busqueda</h1>
                     </div>
 
                 
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Categoria</label>
                         <div className="relative">
                             <div className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
                                 Design
@@ -42,7 +42,7 @@ const Filtrar: React.FC = () => {
 
                   
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Sub Category</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Sub Categoria</label>
                         <div className="relative">
                             <div className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
                                 UI/UX Design
@@ -52,7 +52,7 @@ const Filtrar: React.FC = () => {
 
                   
                     <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Ubicación</label>
                         <div className="relative">
                             <div className="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl">
                                 California
@@ -63,11 +63,11 @@ const Filtrar: React.FC = () => {
                  
                     <div className="mb-6">
                         <div className="flex justify-between mb-2">
-                            <label className="block text-sm font-medium text-gray-700">Minimum Salary</label>
-                            <span className="block text-sm font-medium text-gray-700">Minimum Salary</span>
+                            <label className="block text-sm font-medium text-gray-700">Salario Minimo</label>
+                            <span className="block text-sm font-medium text-gray-700">Salario Maximo</span>
                         </div>
                         <div className="flex justify-between mb-2">
-                            <label className="block text-sm font-medium text-gray-700">Salary</label>
+                            <label className="block text-sm font-medium text-gray-700">Salario</label>
                             <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                             </svg>
@@ -94,49 +94,47 @@ const Filtrar: React.FC = () => {
                                 style={{ left: '0%', width: `${percentage}%` }}
                             ></div>
                             
-                            {/* Punto izquierdo (fijo) */}
+                         
                             <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2.5 w-5 h-5 rounded-full bg-white border-2 border-orange-500"></div>
                             
-                            {/* Punto derecho (movible) */}
+                          
                             <div 
                                 className="absolute top-1/2 transform -translate-y-1/2 -ml-2.5 w-5 h-5 rounded-full bg-white border-2 border-orange-500"
                                 style={{ left: `${percentage}%` }}
                             ></div>
-                            
-                            {/* Etiquetas de valores */}
+                        
                             <div className="absolute left-0 top-full -ml-4 text-xs font-medium text-gray-700 mt-1">$13k</div>
                             <div className="absolute right-0 top-full -mr-4 text-xs font-medium text-gray-700 mt-1">$25k</div>
                         </div>
                     </div>
 
-                    {/* Job Type - Botones seleccionables */}
+                  
                     <div className="mb-8">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Job Type</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Trabajo</label>
                         <div className="grid grid-cols-3 gap-2">
                             <button 
-                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'fulltime' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
-                                onClick={() => setSelectedJobType('fulltime')}
+                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'TIEMPO COMPLETO' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
+                                onClick={() => setSelectedJobType('TIEMPO COMPLETO')}
                             >
-                                Full time
+                                TIEMPO COMPLETO
                             </button>
                             <button 
-                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'parttime' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
-                                onClick={() => setSelectedJobType('parttime')}
+                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'TIEMPO MEDIO' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
+                                onClick={() => setSelectedJobType('TIEMPO MEDIO')}
                             >
-                                Part time
+                               TIEMPO MEDIO
                             </button>
                             <button 
-                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'remote' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
-                                onClick={() => setSelectedJobType('remote')}
+                                className={`py-2 px-4 text-center text-sm rounded-lg ${selectedJobType === 'REMOTO' ? 'bg-orange-100 text-orange-800' : 'bg-gray-50'}`}
+                                onClick={() => setSelectedJobType('REMOTO')}
                             >
-                                Remote
+                               REMOTO
                             </button>
                         </div>
                     </div>
 
-                    {/* Apply Button - Solo visual */}
                     <button className="w-full py-3 bg-indigo-900 text-white font-medium rounded-xl hover:bg-indigo-800 transition-colors">
-                        APPLY NOW
+                        BUSCAR AHORA
                     </button>
                 </div>
             </IonContent>
