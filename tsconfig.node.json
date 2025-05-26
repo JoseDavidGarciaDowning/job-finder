@@ -17,6 +17,6 @@
     "jsx": "react-jsx", 
     "composite": true
   },
-  "include": ["src"],
+  "include": ["src", "public/icons"],
   "exclude": ["node_modules"]
 }

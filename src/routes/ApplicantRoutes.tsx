@@ -16,6 +16,8 @@ import {
   IonTabs,
 } from "@ionic/react";
 import Home from "../applicant/pages/Home";
+import Filtrar from "../applicant/pages/Filtrar";
+
 
 const ApplicantRoutes = () => {
   const isAuthenticated =
@@ -33,6 +35,8 @@ const ApplicantRoutes = () => {
         <IonRouterOutlet>
           <Switch>
             <Route path="/applicant/inicio" render={() => <Home />} />
+                <Route path="/applicant/buscar" render={() => <Filtrar/>} />
+            
           </Switch>
         </IonRouterOutlet>
 

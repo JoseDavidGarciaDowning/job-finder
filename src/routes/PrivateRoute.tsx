@@ -5,7 +5,7 @@ import { Redirect } from "react-router-dom";
 interface PrivateRouteProps {
   children: React.ReactNode;
   allowedRoles: ("applicant" | "company")[];
-  userRole: string | null; // por ejemplo, viene del contexto o authService
+  userRole: ("applicant" | "company") ; // por ejemplo, viene del contexto o authService
   isAuthenticated: boolean;
 }
 
