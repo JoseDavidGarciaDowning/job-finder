@@ -17,8 +17,8 @@ import {
 } from "@ionic/react";
 import Home from "../applicant/pages/Home";
 import Filtrar from "../applicant/pages/Filtrar";
-
-
+import JobDetail from "../applicant/pages/JobDetail";
+import NoResultsFounds from "../applicant/pages/NoResultsFounds";
 const ApplicantRoutes = () => {
   const isAuthenticated =
     useAuthStore((state) => state.status) === "authenticated";
@@ -35,7 +35,9 @@ const ApplicantRoutes = () => {
         <IonRouterOutlet>
           <Switch>
             <Route path="/applicant/inicio" render={() => <Home />} />
-                <Route path="/applicant/buscar" render={() => <Filtrar/>} />
+            <Route path="/applicant/buscar" render={() => <Filtrar/>} />
+            <Route path="/applicant/jobDetail" render={() => <JobDetail/>} />
+            <Route path="/applicant/noResults" render={() => <NoResultsFounds/>} />
             
           </Switch>
         </IonRouterOutlet>
