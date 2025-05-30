@@ -6,7 +6,7 @@ const RegisterApplicant: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Register title="Buscador de empleo" />
+        <Register title="Buscador de empleo" role="applicant" />
       </IonContent>
     </IonPage>
   );

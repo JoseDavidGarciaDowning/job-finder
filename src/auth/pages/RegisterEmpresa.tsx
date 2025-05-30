@@ -6,7 +6,7 @@ const RegisterEmpresa: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <Register title="Empresa" />
+        <Register title="Empresa" role="company" />
       </IonContent>
     </IonPage>
   );
