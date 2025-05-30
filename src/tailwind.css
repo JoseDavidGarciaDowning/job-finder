@@ -14,6 +14,27 @@ body {
 @theme {
   --color-midu-lol: #00f;
   --color-jose: #ff0000;
+  --color-inputLabelColor: #150b3d;
+  --color-backgroud-page-color: #f9f9f9;
+}
+
+/* .range-shadow .range-bar-active {
+  box-shadow: 0 0 10px #ffc185;
+  transition: box-shadow 0.3s ease;
+} */
+/* Usa ::part(bar-active) para apuntar al rango activo */
+.salary-range::part(bar-active) {
+  box-shadow: 0 -5px 10px #ff9228;
+  transition: box-shadow 0.3s ease;
+}
+.salary-range::part(knob) {
+  background: white;
+  border: 4px solid black;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.salary-range::part(knob)::before,
+.salary-range::part(knob)::after {
+  display: none !important;
 }
 
 ion-tab-bar {
