@@ -40,6 +40,7 @@ import LoginApplicant from "./auth/pages/LoginApplicant";
 import RegisterEmpresa from "./auth/pages/RegisterEmpresa";
 import RegisterApplicant from "./auth/pages/RegisterApplicant";
 import FormApplicant from "./applicant/components/FormApplicant";
+import CompanyRoutes from "./routes/CompanyRoutes";
 
 setupIonicReact();
 
@@ -55,6 +56,7 @@ const App: React.FC = () => (
         <Route exact path="/form" component={FormApplicant} />
         <Route exact path="/select" component={SelectRole} />
         <Route exact path="/welcome" component={Welcome} />
+        <Route exact path="/formApplicant" component={FormApplicant} />
 
         {/* Redirección raíz */}
         <Route exact path="/">
@@ -65,7 +67,7 @@ const App: React.FC = () => (
         {/* Applicant */}
         <Route path="/applicant" component={ApplicantRoutes} />
         {/* Company */}
-        {/* <Route path="/company" component={CompanyRoutes} /> */}
+        <Route path="/company" component={CompanyRoutes} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
