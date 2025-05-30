@@ -1,3 +1,4 @@
+import { AllowedRoles } from "../../interfaces";
 import { http } from "../../plugins/http-client.plugin";
 
 
@@ -17,27 +18,30 @@ export class AuthService {
     static login = async ( email: string, password: string ):Promise<LoginResponse> => { 
 
         try {
-            const resp = await http.post<LoginResponse>('http://localhost:3000/api/auth/login', {email, password});
+            const resp = await http.post<LoginResponse>(
+              "https://qp5wg7p4-3000.use2.devtunnels.ms/api/auth/login",
+              { email, password }
+            );
             console.log(resp);
             return resp;
         } catch (error) {
             console.error('Error during login:', error);
-            throw error; // Rethrow the error to handle it in the calling function if needed
+            throw new Error('Correo o contraseña incorrectos');// Rethrow the error to handle it in the calling function if needed
         }
         
     }
 
-    static register = async( email: string, password: string, role:string ):Promise<LoginResponse> => {
+    static register = async( email: string, password: string, role:AllowedRoles ):Promise<LoginResponse> => {
 
         try {
           const resp = await http.post<LoginResponse>(
-            "http://localhost:3000/api/auth/register",
+            "https://qp5wg7p4-3000.use2.devtunnels.ms/api/auth/register",
             { email, password, currentRole: role }
           );
-          console.log(resp);
+        
           return resp;
         } catch (error) {
-          console.error("Error during login:", error);
+          console.error("Error during register:", error);
           throw error; // Rethrow the error to handle it in the calling function if needed
         }
     }
