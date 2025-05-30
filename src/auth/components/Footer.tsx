@@ -1,6 +1,7 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import SecondaryButtom from "../../components/ui/SecondaryButtom";
+import { useIonRouter } from "@ionic/react";
 
 interface Props {
   title: string;
@@ -9,8 +10,11 @@ interface Props {
 
 const Footer: React.FC<Props> = ({ title, description }) => {
   const location = useLocation();
-  const history = useHistory();
+  const history = useIonRouter();
   const handleSecondaryClick = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     if (title === "CREAR CUENTA") {
       if (location.pathname.includes("/company")) {
         history.push("/register/company");
