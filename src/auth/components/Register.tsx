@@ -15,8 +15,8 @@ interface Props {
 const Register: React.FC<Props> = ({title, role}) => {
 
     return (
-      <IonPage>
-        <IonContent fullscreen>
+
+ 
           <div className="flex flex-col safe-area-top safe-area-bottom  h-screen bg-white min-h-screen overflow-auto ">
             {/* Header */}
             <FormHeader title={title} />
@@ -36,8 +36,7 @@ const Register: React.FC<Props> = ({title, role}) => {
               />
             </div>
           </div>
-        </IonContent>
-      </IonPage>
+ 
     );
 };
 

@@ -14,7 +14,7 @@ interface Props {
   role: "applicant" | "company";
 }
 
-const Login: React.FC<Props> = ({ title, role}) => {
+const Login: React.FC<Props> = ({ title, role }) => {
   return (
     <div className="flex flex-col safe-area-top safe-area-bottom  h-screen bg-white min-h-screen overflow-auto ">
       {/* Header */}
@@ -26,7 +26,7 @@ const Login: React.FC<Props> = ({ title, role}) => {
           title="Iniciar sesión"
           description="Por favor inica sesión en tu cuenta registrada"
         />
-        <FormAuth title="INICIAR SESIÓN" mode="login" role={role}/>
+        <FormAuth title="INICIAR SESIÓN" mode="login" role={role} />
 
         <ForgotPassword />
         {/* Register link */}

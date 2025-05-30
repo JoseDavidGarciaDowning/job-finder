@@ -5,6 +5,7 @@ import PasswordInput from "./PasswordInput";
 import { useAuthStore } from "../../stores";
 import RoundedInput from "../../components/ui/RoundedInput";
 import MainButton from "../../components/ui/MainButton";
+import { useIonAlert, useIonLoading } from "@ionic/react";
 
 interface Props {
   title: string;
@@ -14,6 +15,8 @@ interface Props {
 
 const FormAuth: React.FC<Props> = ({ title, mode, role }) => {
   const history = useHistory();
+  const [present, dismiss] = useIonLoading();
+  const [presentAlert] = useIonAlert();
 
   const loginUser = useAuthStore((state) => state.loginUser);
   const registerUser = useAuthStore((state) => state.registerUser);
@@ -26,17 +29,49 @@ const FormAuth: React.FC<Props> = ({ title, mode, role }) => {
       password: { value: string };
     };
 
+    present({ message: "Cargando...", duration: 1000 });
+
+    let success = false;
+    let errorMessage = "";
+
     if (mode === "login") {
-      await loginUser(email.value, password.value); // le pasás el role también si lo necesitás
+      const result = await loginUser(email.value, password.value);
+      success = result.success;
+      if (!success) {
+        errorMessage = result.error!;
+      }
     } else {
-      await registerUser(email.value, password.value, role); // idem
+      const result = await registerUser(email.value, password.value, role);
+      success = result.success;
+      if (!success) {
+        errorMessage = result.error!;
+      }
     }
 
-    // Redireccionar según el rol
-    if (role === "applicant") {
-      history.push("/applicant");
+    dismiss();
+
+    if (!success) {
+      presentAlert({
+        header: "Error",
+        message: errorMessage,
+        buttons: ["OK"],
+      });
+      return;
+    }
+
+    // Redireccionar según el modo y el rol
+    if (mode === "register") {
+      if (role === "applicant") {
+        history.push("/login/applicant");
+      } else {
+        history.push("/login/company");
+      }
     } else {
-      history.push("/company");
+      if (role === "applicant") {
+        history.push("/formApplicant");
+      } else {
+        history.push("/company/inicio");
+      }
     }
   };
 
