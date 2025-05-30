@@ -6,3 +6,6 @@ export interface User {
     isActive: boolean;
     currentRole: string;
 }
+
+
+export type AllowedRoles = 'applicant' | 'company' | 'admin';
