@@ -24,7 +24,7 @@ const Welcome: React.FC = () => {
 
           {/* Main Content */}
           <h2 className="text-xl  text-center font-semibold mb-[6vh]">
-            Tu próximo empleo solo a un clic.
+            Tu próximo empleo solo a un clic jejeje.
           </h2>
 
           {/* Button */}

@@ -7,6 +7,13 @@ import EmpresaIcon from "../../public/icons/EmpresaIcon";
 const SelectRole: React.FC = () => {
   const router = useIonRouter();
 
+  const handdleButton = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+    router.push("/login/applicant");
+  }
+
   return (
     <IonPage id="select-role-page">
       <IonContent>
@@ -30,7 +37,7 @@ const SelectRole: React.FC = () => {
             {/* Tarjetas de opciones */}
             <div className="space-y-4 flex flex-col gap-5">
               <div
-                onClick={() => router.push("/login/applicant")}
+                onClick={handdleButton}
                 className={` bg-white  p-4 rounded-[22px] border cursor-pointer transition-al shadow-2xl`}
               >
                 <div className="flex items-center gap-4 h-20">
