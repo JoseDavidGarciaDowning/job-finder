@@ -1,26 +1,44 @@
 import { create, StateCreator } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
+import { customSessionStorage } from "../storages/capacitor.storage";
 
 
 interface LocationStore {
-    description: string
-    placeId: string
-    setDescription: (description: string) => void
-    setPlaceId: (placeId: string) => void
+    countryId: string;
+    countryName: string;
+    regionName: string;
+    regionId: string;
+    setCountryName: (name: string) => void
+    setCountryId: (placeId: string) => void
+    setRegionName: (name: string) => void
+    setRegionId: (placeId: string) => void
 }
 
 
 export const storeApi: StateCreator<LocationStore> = (set) => ({
-    description: "",
-    placeId: "",
-    setDescription: (description: string) => {
-        set({ description });
+
+    countryId: "",
+    countryName: "",
+    regionName: "",
+    regionId: "",
+    setCountryName: (name: string) => {
+        set({ countryName: name });
     },
-    setPlaceId: (placeId: string) => {
-        set({ placeId });
+    setCountryId: (placeId: string) => {
+        set({ countryId: placeId });
     },
+    setRegionName: (name: string) => {
+        set({ regionName: name });
+    }
+    ,
+    setRegionId: (placeId: string) => {
+        set({ regionId: placeId });
+    }
+
 
 
 });
 
-export const useLocationStore = create<LocationStore>()(devtools(storeApi));
+export const useLocationStore = create<LocationStore>()( devtools(
+    persist(storeApi, { name: "location-store", storage: customSessionStorage })
+));

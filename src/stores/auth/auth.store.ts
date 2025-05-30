@@ -1,5 +1,5 @@
 import { create, StateCreator } from "zustand";
-import type { AuthStatus, User } from "../../interfaces";
+import type { AllowedRoles, AuthStatus, User } from "../../interfaces";
 import { devtools, persist } from "zustand/middleware";
 import { AuthService } from "../../auth/services/auth.service";
 import { customSessionStorage } from "../storages/capacitor.storage";
@@ -10,7 +10,12 @@ export interface AuthState {
   token?: string;
   user?: User;
 
-  loginUser: (email: string, password: string) => Promise<void>;
+  loginUser: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  registerUser: (
+    email: string,
+    password: string,
+    role: AllowedRoles
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
 export const storeApi: StateCreator<AuthState> = (set) => ({
@@ -18,14 +23,35 @@ export const storeApi: StateCreator<AuthState> = (set) => ({
   token: undefined,
   user: undefined,
 
-  loginUser: async (email: string, password: string) => {
+  loginUser: async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     try {
       const { token, ...user } = await AuthService.login(email, password);
       set({ status: "authenticated", token, user });
-      
-    } catch (error) {
+      return { success: true };
+    } catch (error: any) {
       console.log(error);
       set({ status: "not-authenticated", token: undefined, user: undefined });
+      return { success: false, error: error?.message || "Login failed" };
+    }
+  },
+
+  registerUser: async (
+    email: string,
+    password: string,
+    role: AllowedRoles
+  ): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const { token, ...user } = await AuthService.register(
+        email,
+        password,
+        role
+      );
+      set({ status: "authenticated", token, user });
+      return { success: true };
+    } catch (error: any) {
+      console.log(error);
+      set({ status: "not-authenticated", token: undefined, user: undefined });
+      return { success: false, error: error?.message || "Registration failed" };
     }
   },
 });
