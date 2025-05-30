@@ -19,7 +19,7 @@ import Home from "../applicant/pages/Home";
 import Filtrar from "../applicant/pages/Filtrar";
 import JobDetail from "../applicant/pages/JobDetail";
 import NoResultsFounds from "../applicant/pages/NoResultsFounds";
-import FormApplicant from "../applicant/components/FormApplicant";
+
 const ApplicantRoutes = () => {
   const isAuthenticated =
     useAuthStore((state) => state.status) === "authenticated";
