@@ -1,6 +1,10 @@
 import { IonContent, IonPage } from "@ionic/react";
 import React, { useState } from "react";
 import Location from "./Location";
+import { useHistory } from "react-router";
+import { useApplicantStore } from "../../stores/applicant/applicant.store";
+import { useLocationStore } from "../../stores/location/location.store";
+import { ApplicantService } from "../services/location";
 
 const FormApplicant: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -8,21 +12,54 @@ const FormApplicant: React.FC = () => {
     apellidos: "",
     ubicacion: "",
   });
+  const history = useHistory();
+
+  const setFirstName = useApplicantStore((state) => state.setFirstName);
+  const setLastName = useApplicantStore((state) => state.setLastName);
+
+  const countryId = useLocationStore((state) => state.countryId);
+  const countryName = useLocationStore((state) => state.countryName);
+  const regionName = useLocationStore((state) => state.regionName);
+  const regionId = useLocationStore((state) => state.regionId);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({ ...prev, [name]: value }));
+  // };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Datos enviados:", formData);
+
+    setFirstName(formData.nombre);
+    setLastName(formData.apellidos);
     // Aquí iría la lógica para enviar los datos
+    ApplicantService.createBaseApplicationProfile({
+      firstName: formData.nombre,
+      lastName: formData.apellidos,
+      ubication: {
+        countryName,
+        countryId,
+        regionName,
+        regionId,
+      },
+    });
+    console.log("esto le esta llegando al servicio");
+    console.log({
+      firstName: formData.nombre,
+      lastName: formData.apellidos,
+      ubication: {
+        countryName,
+        countryId,
+        regionName,
+        regionId,
+      },
+    });
+    history.push("/applicant/inicio");
   };
   return (
     <IonPage>

@@ -1,6 +1,7 @@
 import React from "react";
 import Suggestion from "./Suggestion";
 import { useCountryInput } from "../hooks/useInput";
+import { useLocationStore } from "../../stores/location/location.store";
 
 interface Props {
   url: string;
@@ -25,6 +26,9 @@ const CountryInput: React.FC<Props> = ({
     setShowSuggestions,
   } = useCountryInput({ url, onNewSelectedState });
 
+    const setCountryName = useLocationStore((state) => state.setCountryName);
+    const setCountryIdStore = useLocationStore((state) => state.setCountryId);
+
   return (
     <div className="relative h-full   w-full max-w-md">
       <label
@@ -44,7 +48,7 @@ const CountryInput: React.FC<Props> = ({
       />
 
       {showSuggestions && (
-        <ul className="absolute z-10 w-full h-36 bg-white border rounded-md shadow-md mt-1 max-h-60 overflow-auto">
+        <ul className="absolute z-10 w-full  bg-white border rounded-md shadow-md mt-1 max-h-36 overflow-auto">
           {suggestions?.map((prediction) => (
             <Suggestion
               key={prediction.place_id}
@@ -53,6 +57,8 @@ const CountryInput: React.FC<Props> = ({
                 setIsSelected(true);
                 onNewCountryID?.(prediction.place_id);
                 setShowSuggestions(false);
+                setCountryName(prediction.description);
+                setCountryIdStore(prediction.place_id);
               }}
               title={prediction.description}
             />
