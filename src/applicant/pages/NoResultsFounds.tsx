@@ -10,7 +10,7 @@ const NoResultsFounds: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding bg-gray-50">
         <div className="max-w-md mx-auto bg-white min-h-full">
- 
+
           <div className="flex items-center p-4 border-b border-gray-100">
             <button onClick={handleBackClick} className="p-2 -ml-2">
               <svg
@@ -24,7 +24,6 @@ const NoResultsFounds: React.FC = () => {
               </svg>
             </button>
           </div>
-
 
           <div className="p-4">
             <div className="relative">
@@ -52,67 +51,22 @@ const NoResultsFounds: React.FC = () => {
             </div>
           </div>
 
-
-          <div className="flex flex-col items-center justify-center px-6 py-32 text-center">
-
-            <div className="flex justify-center items-center mb-16">
-              <div className="relative">
-
-                <div className="relative">
- 
-                  <div className="w-20 h-24 bg-blue-200 rounded-lg transform rotate-12 absolute -top-1 -right-1"></div>
-
-
-                  <div className="w-20 h-24 bg-orange-400 rounded-lg relative z-10">
-
-                    <div className="absolute top-3 left-3 right-3">
-                      <div className="h-0.5 bg-white rounded mb-1"></div>
-                      <div className="h-0.5 bg-white rounded mb-1"></div>
-                      <div className="h-0.5 bg-white rounded w-3/4"></div>
-                    </div>
-
-                    <div className="absolute top-2 right-2 w-3 h-3 bg-white rounded"></div>
-                  </div>
-                </div>
-
-
-                <div className="absolute bottom-0 right-0 transform translate-x-3 translate-y-3 z-20">
-                  <div className="relative">
-
-                    <div className="w-12 h-12 border-4 border-purple-800 rounded-full bg-white"></div>
-            
-                    <div className="absolute -bottom-2 -right-2 w-6 h-2 bg-purple-800 rounded-full transform rotate-45"></div>
-           
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-7 h-7 bg-purple-900 rounded-full flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -top-6 -left-8 w-2 h-2 bg-orange-300 rounded-full"></div>
-                <div className="absolute -bottom-8 left-8 w-1.5 h-1.5 bg-red-300 rounded-full"></div>
-                <div className="absolute top-8 -right-10 w-1 h-1 bg-blue-300 rounded-full"></div>
-              </div>
+          <div className="flex flex-col items-center justify-center px-6 py-20 text-center">
+            <div className="mb-16">
+              <img 
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Illustrasi-U3sNVoPaqNdd73wIAi3goYZXYbT2sa.png" 
+                alt="No results illustration"
+                className="w-32 h-32 object-contain"
+              />
             </div>
 
-       
-            <div className="space-y-6">
+            {/* Text Content */}
+            <div className="space-y-4">
               <h2 className="text-xl font-semibold text-gray-900">Resultados no encontrados</h2>
               <p className="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
                 No se encontró ningún resultado. Por favor, verifica la ortografía o intenta con otra palabra.
               </p>
             </div>
-
-            <button
-              onClick={handleBackClick}
-              className="mt-12 px-6 py-3 bg-orange-500 text-white font-medium rounded-xl hover:bg-orange-600 transition-colors"
-            >
-              Intentar de nuevo
-            </button>
           </div>
         </div>
       </IonContent>
