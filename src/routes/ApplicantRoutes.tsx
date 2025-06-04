@@ -3,9 +3,9 @@ import { useAuthStore } from "../stores";
 import { IonReactRouter } from "@ionic/react-router";
 import {
   homeOutline,
-  searchOutline,
   bookmarkOutline,
-  checkmarkDoneOutline,
+  personOutline,
+  searchSharp,
 } from "ionicons/icons";
 import {
   IonIcon,
@@ -52,7 +52,7 @@ const ApplicantRoutes = () => {
             <IonLabel>Inicio</IonLabel>
           </IonTabButton>
           <IonTabButton tab="buscar" href="/applicant/buscar">
-            <IonIcon icon={searchOutline} />
+            <IonIcon icon={searchSharp} />
             <IonLabel>Buscar</IonLabel>
           </IonTabButton>
           <IonTabButton tab="guardados" href="/applicant/guardados">
@@ -60,7 +60,7 @@ const ApplicantRoutes = () => {
             <IonLabel>Guardados</IonLabel>
           </IonTabButton>
           <IonTabButton tab="aplicados" href="/applicant/aplicados">
-            <IonIcon icon={checkmarkDoneOutline} />
+            <IonIcon icon={personOutline} />
             <IonLabel>Aplicados</IonLabel>
           </IonTabButton>
         </IonTabBar>
