@@ -1,6 +1,8 @@
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 import { IonApp, IonRouterOutlet, setupIonicReact } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
+import { useEffect } from "react";
+import { notificationsService } from "./plugins/push-notifications.plugin";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -44,33 +46,57 @@ import CompanyRoutes from "./routes/CompanyRoutes";
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet animated={true}>
-        {/* Rutas públicas */}
-        <Route exact path="/login/company" component={LoginEmpresa} />
-        <Route exact path="/login/applicant" component={LoginApplicant} />
-        <Route exact path="/register/company" component={RegisterEmpresa} />
-        <Route exact path="/register/applicant" component={RegisterApplicant} />
-        <Route exact path="/form" component={FormApplicant} />
-        <Route exact path="/select" component={SelectRole} />
-        <Route exact path="/welcome" component={Welcome} />
-        <Route exact path="/formApplicant" component={FormApplicant} />
+const App: React.FC = () => {
+  const history = useHistory();
 
-        {/* Redirección raíz */}
-        <Route exact path="/">
-          <Redirect to="/welcome" />
-        </Route>
+  useEffect(() => {
+    notificationsService.initialize();
+  }, []);
 
-        {/* Rutas protegidas por rol */}
-        {/* Applicant */}
-        <Route path="/applicant" component={ApplicantRoutes} />
-        {/* Company */}
-        <Route path="/company" component={CompanyRoutes} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+  useEffect(() => {
+    const handleNavigation = (event: Event) => {
+      const { path } = (event as CustomEvent).detail;
+      if (path) {
+        history.push(path);
+      }
+    };
+
+    window.addEventListener('navigateToPage', handleNavigation);
+
+    // Limpieza al desmontar el componente
+    return () => {
+      window.removeEventListener('navigateToPage', handleNavigation);
+    };
+  }, [history]);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonRouterOutlet animated={true}>
+          {/* Rutas públicas */}
+          <Route exact path="/login/company" component={LoginEmpresa} />
+          <Route exact path="/login/applicant" component={LoginApplicant} />
+          <Route exact path="/register/company" component={RegisterEmpresa} />
+          <Route exact path="/register/applicant" component={RegisterApplicant} />
+          <Route exact path="/form" component={FormApplicant} />
+          <Route exact path="/select" component={SelectRole} />
+          <Route exact path="/welcome" component={Welcome} />
+          <Route exact path="/formApplicant" component={FormApplicant} />
+
+          {/* Redirección raíz */}
+          <Route exact path="/">
+            <Redirect to="/welcome" />
+          </Route>
+
+          {/* Rutas protegidas por rol */}
+          {/* Applicant */}
+          <Route path="/applicant" component={ApplicantRoutes} />
+          {/* Company */}
+          <Route path="/company" component={CompanyRoutes} />
+        </IonRouterOutlet>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;
