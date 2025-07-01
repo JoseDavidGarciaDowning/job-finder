@@ -1,12 +1,32 @@
-import { IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { addCircleOutline, bookmarkOutline, checkmarkDoneOutline, homeOutline } from "ionicons/icons";
+import {
+  IonTabs,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
+} from "@ionic/react";
+import {
+  homeOutline,
+  addCircleOutline,
+  bookmarkOutline,
+  checkmarkDoneOutline,
+} from "ionicons/icons";
 import { Redirect, Route, Switch } from "react-router";
+
+// Estado de autenticación
 import { useAuthStore } from "../stores";
+
+// Páginas con tabs
 import CompanyHome from "../company/pages/CompanyHome";
+import CreateJob from "../company/pages/CreateJob";
+import JobDetail from "../applicant/pages/JobDetail";
+
+
+// Página fuera de los tabs
 
 const CompanyRoutes = () => {
-    
   const isAuthenticated =
     useAuthStore((state) => state.status) === "authenticated";
   const userRole = useAuthStore((state) => state.user?.currentRole)!;
@@ -22,6 +42,10 @@ const CompanyRoutes = () => {
         <IonRouterOutlet>
           <Switch>
             <Route exact path="/company/inicio" component={CompanyHome} />
+            <Route exact path="/company/postJob" component={CreateJob} />
+            <Route exact path="/jobs/jobDetail/:id" component={JobDetail} />
+
+            
           </Switch>
         </IonRouterOutlet>
 

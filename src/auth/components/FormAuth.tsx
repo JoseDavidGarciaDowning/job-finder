@@ -61,17 +61,9 @@ const FormAuth: React.FC<Props> = ({ title, mode, role }) => {
 
     // Redireccionar según el modo y el rol
     if (mode === "register") {
-      if (role === "applicant") {
-        history.push("/login/applicant");
-      } else {
-        history.push("/login/company");
-      }
+      history.push(`/login/${role}`);
     } else {
-      if (role === "applicant") {
-        history.push("/formApplicant");
-      } else {
-        history.push("/company/inicio");
-      }
+      history.push(role === "applicant" ? "/formApplicant" : "/formCompany");
     }
   };
 

@@ -41,6 +41,8 @@ import RegisterEmpresa from "./auth/pages/RegisterEmpresa";
 import RegisterApplicant from "./auth/pages/RegisterApplicant";
 import FormApplicant from "./applicant/components/FormApplicant";
 import CompanyRoutes from "./routes/CompanyRoutes";
+import CompanyProfileData from "./company/pages/CompanyProfileData";
+import JobDetail from "./applicant/pages/JobDetail";
 
 setupIonicReact();
 
@@ -57,6 +59,9 @@ const App: React.FC = () => (
         <Route exact path="/select" component={SelectRole} />
         <Route exact path="/welcome" component={Welcome} />
         <Route exact path="/formApplicant" component={FormApplicant} />
+        <Route exact path="/formCompany" component={CompanyProfileData} />
+        <Route exact path="/jobs/jobDetail/:id" component={JobDetail} />
+
 
         {/* Redirección raíz */}
         <Route exact path="/">

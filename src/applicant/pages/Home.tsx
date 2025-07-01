@@ -1,40 +1,59 @@
-import { IonAvatar, IonContent, IonHeader, IonPage } from "@ionic/react";
+import { IonContent, IonHeader, IonPage } from "@ionic/react";
 import React from "react";
 import JobCard from "../../components/ui/JobCard";
 import { useApplicantStore } from "../../stores/applicant/applicant.store";
+import HomeHeader from "../../components/HomeHeader";
+
+import { ApplicantService } from "../services/location";
+import { useQuery } from "@tanstack/react-query";
+import { FullScreenLoading } from "../../pages/FullScreenLoading";
 
 const Home: React.FC = () => {
   const firstName = useApplicantStore((state) => state.firstName);
+
+
+  const {
+    data: offers,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["offers"],
+    queryFn: () =>  ApplicantService.getOffers(),
+    staleTime: 2000,
+  });
+
   return (
     <IonPage>
       <IonHeader>
-        <div className="px-7 pt-9 pb-2">
-          <div className="flex justify-between items-start">
-            <div className="py-2.5">
-              <h1 className="text-2xl font-bold text-indigo-900">Hola</h1>
-              <h2 className="text-2xl font-bold text-indigo-900">
-                {firstName}
-              </h2>
-            </div>
-            <IonAvatar className="w-9">
-              <img
-                alt="Silhouette of a person's head"
-                src="https://ionicframework.com/docs/img/demos/avatar.svg"
-              />
-            </IonAvatar>
-          </div>
-        </div>
+        <HomeHeader name={firstName} />
       </IonHeader>
       <IonContent fullscreen>
         <div className="flex flex-col safe-area-top safe-area-bottom  h-screen bg-[#F9F9F9] min-h-screen overflow-auto ">
-          <JobCard
+          
+          
+          {isLoading && <FullScreenLoading />}
+          {isError && <div className="text-red-500 font-semibold">{JSON.stringify(error)}</div>}
+          {offers &&
+            offers.length > 0 &&
+            offers.map((offer) => (
+              <JobCard
+                key={offer.id}
+                offer={offer}
+                buttonActionName="Aplicar"
+              />
+            ))}
+
+          {/* <JobCard
             titleJob="Senior Product Designer"
             companyName="Google Inc"
+            buttonActionName="Aplicar"
           />
           <JobCard
             titleJob="Senior Software Developer"
             companyName="Microsoft"
-          />
+            buttonActionName="Aplicar"
+          /> */}
         </div>
       </IonContent>
     </IonPage>

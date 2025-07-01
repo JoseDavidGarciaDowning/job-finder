@@ -3,8 +3,10 @@
 
 import { Capacitor } from "@capacitor/core";
 import { Preferences } from "@capacitor/preferences";
+import { API_BASE_URL } from '../config/config';
 
 const isNative = Capacitor.getPlatform() !== "web";
+
 
 const getToken = async (): Promise<string | null> => {
   try {
@@ -33,21 +35,52 @@ interface HttpClientPlugin {
   get: <T>(url: string) => Promise<T>;
   post: <T>(url: string, body: any) => Promise<T>;
   postAuth: <T>(url: string, body: any) => Promise<T>;
+  getAuth: <T>(url: string) => Promise<T>;
   put: <T>(url: string, body: any) => Promise<T>;
   delete: <T>(url: string) => Promise<T>;
 }
 
+// Helper para concatenar el BASE_URL
+const buildUrl = (url: string) => {
+  if (url.startsWith("http")) return url;
+  return `${API_BASE_URL.replace(/\/$/, "")}/${url.replace(/^\//, "")}`;
+};
+
 const httpClientPlugin: HttpClientPlugin = {
   get: async <T>(url: string): Promise<T> => {
-    const response = await fetch(url);
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl);
     if (!response.ok) {
       throw new Error(`HTTP GET request failed with status ${response.status}`);
     }
     return response.json();
   },
 
+  getAuth: async <T>(url: string): Promise<T> => {
+    const token = await getToken();
+    const headers: Record<string, string> = {};
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl, {
+      method: "GET",
+      headers,
+    });
+
+    if (!response.ok) {
+      const errorBody = await response.json();
+      throw new Error(errorBody?.message || "Error desconocido del servidor");
+    }
+
+    return response.json();
+  },
+
   post: async <T>(url: string, body: any): Promise<T> => {
-    const response = await fetch(url, {
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -62,7 +95,6 @@ const httpClientPlugin: HttpClientPlugin = {
         // El cuerpo no es JSON válido
       }
 
-      // Si message es array, unirlo
       const rawMessage = errorBody?.message;
       const message = Array.isArray(rawMessage)
         ? rawMessage.join(", ")
@@ -87,27 +119,24 @@ const httpClientPlugin: HttpClientPlugin = {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body),
     });
 
     if (!response.ok) {
-      try {
         const errorBody = await response.json();
-        // Devuelve solo el mensaje del backend si existe
         throw new Error(errorBody?.message || "Error desconocido del servidor");
-      } catch (e) {
-        throw new Error("Error desconocido del servidor");
-      }
     }
 
     return response.json();
   },
 
   put: async <T>(url: string, body: any): Promise<T> => {
-    const response = await fetch(url, {
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -119,7 +148,8 @@ const httpClientPlugin: HttpClientPlugin = {
   },
 
   delete: async <T>(url: string): Promise<T> => {
-    const response = await fetch(url, { method: "DELETE" });
+    const fullUrl = buildUrl(url);
+    const response = await fetch(fullUrl, { method: "DELETE" });
     if (!response.ok) {
       throw new Error(
         `HTTP DELETE request failed with status ${response.status}`

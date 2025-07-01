@@ -1,24 +1,31 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import { useAuthStore } from "../stores";
 import { IonReactRouter } from "@ionic/react-router";
 import {
-  homeOutline,
-  searchOutline,
-  bookmarkOutline,
-  checkmarkDoneOutline,
-} from "ionicons/icons";
-import {
-  IonIcon,
-  IonLabel,
+  IonTabs,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonTabs,
+  IonIcon,
+  IonLabel,
 } from "@ionic/react";
+import {
+  homeOutline,
+  bookmarkOutline,
+  searchSharp,
+  personOutline,
+} from "ionicons/icons";
+
+// Tu lógica de autenticación
+import { useAuthStore } from "../stores";
+
+// Páginas dentro del esquema de tabs
 import Home from "../applicant/pages/Home";
 import Filtrar from "../applicant/pages/Filtrar";
-import JobDetail from "../applicant/pages/JobDetail";
 import NoResultsFounds from "../applicant/pages/NoResultsFounds";
+
+// Página fuera del tab bar
+import JobDetail from "../applicant/pages/JobDetail"; // Asegúrate de tener este componente
+import SearchResults from "../applicant/pages/SearchResults";
 
 const ApplicantRoutes = () => {
   const isAuthenticated =
@@ -36,9 +43,10 @@ const ApplicantRoutes = () => {
         <IonRouterOutlet>
           <Switch>
             <Route path="/applicant/inicio" render={() => <Home />} />
-      
+
             <Route path="/applicant/buscar" render={() => <Filtrar />} />
-            <Route path="/applicant/jobDetail" render={() => <JobDetail />} />
+            <Route exact path="/jobs/jobDetail/:id" component={JobDetail} />
+            <Route path="/applicant/resultados" render={() => <SearchResults />} />
             <Route
               path="/applicant/noResults"
               render={() => <NoResultsFounds />}
@@ -52,7 +60,7 @@ const ApplicantRoutes = () => {
             <IonLabel>Inicio</IonLabel>
           </IonTabButton>
           <IonTabButton tab="buscar" href="/applicant/buscar">
-            <IonIcon icon={searchOutline} />
+            <IonIcon icon={searchSharp} />
             <IonLabel>Buscar</IonLabel>
           </IonTabButton>
           <IonTabButton tab="guardados" href="/applicant/guardados">
@@ -60,7 +68,7 @@ const ApplicantRoutes = () => {
             <IonLabel>Guardados</IonLabel>
           </IonTabButton>
           <IonTabButton tab="aplicados" href="/applicant/aplicados">
-            <IonIcon icon={checkmarkDoneOutline} />
+            <IonIcon icon={personOutline} />
             <IonLabel>Aplicados</IonLabel>
           </IonTabButton>
         </IonTabBar>

@@ -1,16 +1,21 @@
 import React from "react";
 import { useCountryInput } from "../hooks/useInput";
 import Suggestion from "./Suggestion";
-import { useLocationStore } from "../../stores/location/location.store";
 
 interface Props {
   url: string;
+  styles?: string;
   onNewSelectedState?: (newState: boolean) => void;
+  setRegionName: (name: string) => void;
+  setRegionId: (placeId: string) => void;
 }
 
 const RegionInputSuggestions: React.FC<Props> = ({
   url,
+  styles,
   onNewSelectedState,
+  setRegionName,
+  setRegionId,
 }) => {
   const {
     value,
@@ -24,21 +29,24 @@ const RegionInputSuggestions: React.FC<Props> = ({
     setShowSuggestions,
   } = useCountryInput({ url, onNewSelectedState });
 
-  const setRegionName = useLocationStore((state) => state.setRegionName);
-  const setRegionId = useLocationStore((state) => state.setRegionId);
+
 
   return (
     <div className="relative  w-full max-w-md">
       <label
-        htmlFor="Pais"
+        htmlFor="Region"
         className="block text-sm font-medium text-[#150B3D] *:mb-1"
       >
-        Pais
+        Region
       </label>
       <input
         type="text"
         placeholder={"Escribe una dirección..."}
-        className="text-black w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className={
+          styles
+            ? styles
+            : "text-black w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+        }
         value={value}
         onChange={onInputChange}
         onBlur={onInputBlur}

@@ -3,12 +3,18 @@ import { bookmarkOutline } from "ionicons/icons";
 import React from "react";
 import TagJobCard from "./TagJobCard";
 
+import { Offer } from "../../interfaces/offer.interfaces";
+import { useHistory } from "react-router";
+
+
 interface Props {
-    titleJob: string;
-    companyName: string;
+  offer: Offer;
+  buttonActionName: string;
 }
 
-const JobCard: React.FC<Props> = ({titleJob, companyName}) => {
+const JobCard: React.FC<Props> = ({ offer, buttonActionName }) => {
+  const history = useHistory();
+
   return (
     <div className="w-full sm:w-2xl mx-auto p-6">
       <div className="bg-white  rounded-lg  p-3 ">
@@ -38,9 +44,9 @@ const JobCard: React.FC<Props> = ({titleJob, companyName}) => {
           {/* Job Details */}
           <div className="flex-1 min-w-0">
             <h2 className="text-xl font-bold text-gray-900 mb-1">
-                {titleJob}
+              {offer.title}
             </h2>
-            <p className="text-gray-600 text-xs mb-6">{companyName}</p>
+            <p className="text-gray-600 text-xs mb-6">{offer.companyName}</p>
 
             {/* Tags and Apply Button Container */}
             <div className="flex items-center justify-between">
@@ -52,8 +58,12 @@ const JobCard: React.FC<Props> = ({titleJob, companyName}) => {
             </div>
             <div className="flex items-center justify-end mt-1">
               {/* Apply Button */}
-              <button className="px-8 py-2 bg-[#40189D]  hover:bg-purple-400 text-white rounded-lg font-normal transition-colors text-xs">
-                Aplicar
+              <button
+                onClick={() => history.push(`/jobs/jobDetail/${offer.id}`)}
+             
+                className="px-8 py-2 bg-[#40189D] hover:bg-purple-400 text-white rounded-lg font-normal transition-colors text-xs"
+              >
+                {buttonActionName}
               </button>
             </div>
           </div>
