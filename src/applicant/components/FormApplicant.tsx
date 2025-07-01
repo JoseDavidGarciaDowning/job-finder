@@ -1,10 +1,11 @@
 import { IonContent, IonPage } from "@ionic/react";
-import React, { useState } from "react";
-import Location from "./Location";
+import React, { useEffect, useState } from "react";
+import Location from "../../components/Location";
 import { useHistory } from "react-router";
 import { useApplicantStore } from "../../stores/applicant/applicant.store";
 import { useLocationStore } from "../../stores/location/location.store";
 import { ApplicantService } from "../services/location";
+
 
 const FormApplicant: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -16,11 +17,19 @@ const FormApplicant: React.FC = () => {
 
   const setFirstName = useApplicantStore((state) => state.setFirstName);
   const setLastName = useApplicantStore((state) => state.setLastName);
+  const setHasProfile = useApplicantStore((state) => state.setHasProfile);
+      const hasProfile = useApplicantStore((state) => state.hasProfile);
+      useEffect(() => {
+        if (hasProfile) {
+          history.push("/applicant/inicio");
+        }
+      }, [hasProfile, history]);
 
-  const countryId = useLocationStore((state) => state.countryId);
-  const countryName = useLocationStore((state) => state.countryName);
-  const regionName = useLocationStore((state) => state.regionName);
-  const regionId = useLocationStore((state) => state.regionId);
+  const countryId = useLocationStore((state) => state.applicant.countryId);
+  const countryName = useLocationStore((state) => state.applicant.countryName);
+  const regionName = useLocationStore((state) => state.applicant.regionName);
+  const regionId = useLocationStore((state) => state.applicant.regionId);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,6 +46,7 @@ const FormApplicant: React.FC = () => {
 
     setFirstName(formData.nombre);
     setLastName(formData.apellidos);
+    setHasProfile(true);
     // Aquí iría la lógica para enviar los datos
     ApplicantService.createBaseApplicationProfile({
       firstName: formData.nombre,
@@ -48,17 +58,7 @@ const FormApplicant: React.FC = () => {
         regionId,
       },
     });
-    console.log("esto le esta llegando al servicio");
-    console.log({
-      firstName: formData.nombre,
-      lastName: formData.apellidos,
-      ubication: {
-        countryName,
-        countryId,
-        regionName,
-        regionId,
-      },
-    });
+  
     history.push("/applicant/inicio");
   };
   return (
@@ -112,7 +112,7 @@ const FormApplicant: React.FC = () => {
                     className="text-[#323232]   w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-slate-300 focus:border-transparent transition-all"
                   />
                 </div>
-                <Location />
+                <Location role="applicant" />
 
                 <button
                   type="submit"

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback,  useState } from "react";
 import { PlacesAutoComplete } from "../../interfaces/places-autocomplete";
 import debounce from "just-debounce-it";
 
@@ -13,32 +13,26 @@ interface UseCountryInputProps {
 export const useCountryInput = ({
   url,
   onNewSelectedState,
-  // onNewPlaceID,
-}: UseCountryInputProps) => {
+}: // onNewPlaceID,
+UseCountryInputProps) => {
   const [value, setValue] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [suggestions, setSuggestions] = useState<PlacesAutoComplete[]>([]);
-
-
 
   const debouncedSearchLocation = useCallback(
     debounce(async (url: string, value: string) => {
       const suggestions = await searchLocation({ url, value });
       setSuggestions(suggestions);
     }, 300),
-    [],
+    []
   );
-
-
-
 
   // Handlers
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     if (isSelected) setIsSelected(false);
     debouncedSearchLocation(url, e.target.value);
-
   };
 
   const onInputFocus = () => setShowSuggestions(true);

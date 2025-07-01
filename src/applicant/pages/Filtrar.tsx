@@ -1,21 +1,98 @@
-import { IonContent, IonPage} from "@ionic/react";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { IonContent, IonPage, useIonRouter } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+
 import SalaryRangeSelector from "../../components/ui/SalaryRangeSelector";
+import Location from "../../components/Location";
+import Suggestion from "../components/Suggestion";
+import { useCategoriesQuery } from "../hooks/useCategoriesQuery";
+import { useSubCategoriesQuery } from "../hooks/useSubCategoriesQuery";
+import { useFilterLocationStore } from "../../stores/filter-location/filter.store";
+
 
 const Filtrar: React.FC = () => {
-  const history = useHistory();
+  // const history = useHistory();
+  const navigate = useIonRouter();
+   const [salaryRange, setSalaryRange] = useState({ lower: 2000, upper: 8000 });
 
-  const [selectedJobType, setSelectedJobType] = useState("Tiempo Completo");
+  const [selectedJobType, setSelectedJobType] = useState("Presencial");
+  const [selectedScheduleType, setScheduleType] = useState("tiempo_completo");
+  const [showCategoriesSuggestions, setShowCategoriesSuggestions] =
+    useState(false);
+  const [showSubCategoriesSuggestions, setShowSubCategoriesSuggestions] =
+    useState(false);
 
+  const [categoryValue, setCategoryValue] = useState({ id: "", name: "" });
+  const [subCategoryValue, setSubCategoryValue] = useState({ id: "", name: "" });
 
+  const [categoryInput, setCategoryInput] = useState("");
+  const [subCategoryInput, setSubCategoryInput] = useState("");
 
+  const { isError, data: categories, refetch, error: categoryError } = useCategoriesQuery(
+    categoryInput
+  );
+
+  const { isError: isErrorSubCategories, data: subCategories, refetch: refetchSubCategories, error: subCategoryError } = useSubCategoriesQuery(
+    categoryValue.id,
+    subCategoryInput
+  );
+
+  const regionId = useFilterLocationStore((state) => state.regionId);
+
+  useEffect(() => {
+    if (categoryInput.trim().length > 0) {
+      refetch();
+    }
+  }, [categoryInput, refetch]);
+
+  useEffect(() => {
+    if (subCategoryInput.trim().length > 0) {
+    
+      refetchSubCategories();
+    }
+  }, [subCategoryInput, refetchSubCategories]);
+  
   const handleSearch = () => {
-    history.push("/applicant/jobDetail");
+    const query = new URLSearchParams({
+      categoryId: categoryValue.id,
+      skillId: subCategoryValue.id,
+      regionId: regionId,
+      workplaceType: selectedJobType,
+      workSchedule: selectedScheduleType,
+      salaryMin: salaryRange.lower.toString(),
+      salaryMax: salaryRange.upper.toString(),
+    }).toString();
+  
+    navigate.push(`/applicant/resultados?${query}`, 'forward');
   };
 
   const handleBackClick = () => {
-    history.push("/applicant/inicio");
+    navigate.push("/applicant/inicio");
+  };
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategoryInput(e.target.value);
+    setShowCategoriesSuggestions(true);
+    if(categoryValue.name.trim().length !== 0){
+      setCategoryValue({
+        id: "",
+        name: "",
+      });
+    }
+  };
+
+  const onNewSalaryRange = (salaryRange: { lower: number; upper: number }) => {
+    setSalaryRange(salaryRange);
+  };
+
+  const handleSubCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSubCategoryInput(e.target.value);
+    setShowSubCategoriesSuggestions(true);
+    if(subCategoryValue.name.trim().length !== 0){
+      setSubCategoryValue({
+        id: "",
+        name: "",
+      });
+    }
   };
 
   return (
@@ -53,7 +130,28 @@ const Filtrar: React.FC = () => {
                 <input
                   type="text"
                   className="w-full px-4 py-3 bg-white border-white outline-none border  rounded-xl"
+                  value={categoryInput}
+                  onChange={ handleCategoryChange}
                 ></input>
+                {isError && <p className="text-red-500">{(categoryError as Error).message}</p>}
+                {showCategoriesSuggestions && categories && !isError && (
+                  <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-60 overflow-auto">
+                    {categories.map((category) => (
+                      <Suggestion
+                        key={category.id}
+                        onMouseDown={() => {
+                          setCategoryValue({
+                            id: category.id,
+                            name: category.name,
+                          });
+                          setCategoryInput(category.name);
+                          setShowCategoriesSuggestions(false);
+                        }}
+                        title={category.name}
+                      />
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
 
@@ -64,21 +162,38 @@ const Filtrar: React.FC = () => {
               <div className="relative">
                 <input
                   type="text"
+                  value={subCategoryInput}
+                  onChange={handleSubCategoryChange}
                   className="w-full px-4 py-3 bg-white border-white outline-none border  rounded-xl"
                 ></input>
+                {isErrorSubCategories && <p className="text-red-500">{(subCategoryError as Error).message}</p>}
+                {showSubCategoriesSuggestions && subCategories && !isErrorSubCategories && (
+                  <ul className="absolute z-10 w-full bg-white border rounded-md shadow-md mt-1 max-h-60 overflow-auto">
+                    {subCategories.map((subCategory) => (
+                      <Suggestion
+                        key={subCategory.id}
+                        onMouseDown={() => {
+                          setSubCategoryValue({
+                            id: subCategory.id,
+                            name: subCategory.name,
+                          });
+                          setSubCategoryInput(subCategory.name);
+                          setShowSubCategoriesSuggestions(false);
+                        }}
+                        title={subCategory.name}
+                      />
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-inputLabelColor mb-2">
-                Ubicación
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  className="w-full px-4 py-3 bg-white border-white outline-none border  rounded-xl"
-                ></input>
-              </div>
+              <Location
+                role="filterSearch"
+                countryInputStyles="w-full px-4 py-3 bg-white border-white outline-none border  rounded-xl"
+                regionInputStyles="w-full px-4 py-3 bg-white border-white outline-none border  rounded-xl"
+              />
             </div>
 
             <div className="mb-6">
@@ -108,43 +223,110 @@ const Filtrar: React.FC = () => {
                 </svg>
               </div>
 
-             <SalaryRangeSelector />
+              <SalaryRangeSelector onNewSalaryRange={onNewSalaryRange} />
             </div>
 
             <div className="mb-8">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Trabajo
+                Tipo de de lugar de Trabajo
               </label>
               <div className="grid grid-cols-3 gap-2">
                 <button
                   className={`py-2 px-4 text-center text-sm rounded-lg ${
-                    selectedJobType === "Tiempo Completo"
+                    selectedJobType === "presencial"
                       ? "bg-orange-100 text-orange-800"
                       : "bg-gray-50"
                   }`}
-                  onClick={() => setSelectedJobType("Tiempo Completo")}
+                  onClick={() => setSelectedJobType("presencial")}
+                >
+                  Presencial
+                </button>
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedJobType === "híbrido"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setSelectedJobType("híbrido")}
+                >
+                  Híbrido
+                </button>
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedJobType === "remoto"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setSelectedJobType("remoto")}
+                >
+                  Remoto
+                </button>
+              </div>
+            </div>
+            <div className="mb-8">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Jornada Laboral
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedScheduleType === "tiempo_completo"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setScheduleType("tiempo_completo")}
                 >
                   Tiempo Completo
                 </button>
                 <button
                   className={`py-2 px-4 text-center text-sm rounded-lg ${
-                    selectedJobType === "Tiempo Medio"
+                    selectedScheduleType === "medio_tiempo"
                       ? "bg-orange-100 text-orange-800"
                       : "bg-gray-50"
                   }`}
-                  onClick={() => setSelectedJobType("Tiempo Medio")}
+                  onClick={() => setScheduleType("medio_tiempo")}
                 >
-                  Tiempo Medio
+                  Medio Tiempo
                 </button>
                 <button
                   className={`py-2 px-4 text-center text-sm rounded-lg ${
-                    selectedJobType === "Remoto"
+                    selectedScheduleType === "por_horas"
                       ? "bg-orange-100 text-orange-800"
                       : "bg-gray-50"
                   }`}
-                  onClick={() => setSelectedJobType("Remoto")}
+                  onClick={() => setScheduleType("por_horas")}
                 >
-                  Remoto
+                  Por horas
+                </button>
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedScheduleType === "flexible"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setScheduleType("flexible")}
+                >
+                  Flexible
+                </button>
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedScheduleType === "jornada_rotativa"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setScheduleType("jornada_rotativa")}
+                >
+                  Jornada rotativa
+                </button>
+                <button
+                  className={`py-2 px-4 text-center text-sm rounded-lg ${
+                    selectedScheduleType === "turno_nocturno"
+                      ? "bg-orange-100 text-orange-800"
+                      : "bg-gray-50"
+                  }`}
+                  onClick={() => setScheduleType("turno_nocturno")}
+                >
+                  Turno nocturno
                 </button>
               </div>
             </div>

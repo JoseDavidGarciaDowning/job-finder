@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { IonRange } from "@ionic/react";
 
-function SalaryRangeSelector() {
+interface SalaryRangeSelectorProps {
+  onNewSalaryRange: (salaryRange: { lower: number; upper: number }) => void;
+}
+
+function SalaryRangeSelector({ onNewSalaryRange }: SalaryRangeSelectorProps) {
   const [range, setRange] = useState({ lower: 2000, upper: 8000 });
   const max = 10000;
 
@@ -15,6 +19,7 @@ function SalaryRangeSelector() {
   const handleInput = (e: CustomEvent) => {
     const value = e.detail.value as { lower: number; upper: number };
     setRange(value);
+    onNewSalaryRange(value);
   };
 
   return (
