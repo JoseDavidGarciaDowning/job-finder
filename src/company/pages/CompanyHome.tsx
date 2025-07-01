@@ -11,7 +11,6 @@ const CompanyHome: React.FC = () => {
   const name = useCompanyStore((state) => state.name);
   // const [offers, setOffers] = useState<Offer[]>([]);
 
-  
   const {
     data: offers,
     isLoading,
@@ -36,7 +35,6 @@ const CompanyHome: React.FC = () => {
         </div>
 
         <div className="flex flex-col safe-area-top safe-area-bottom  h-screen bg-[#F9F9F9] min-h-screen overflow-auto ">
-   
           {isLoading && <FullScreenLoading />}
           {isError && <div className="text-red-500 font-semibold">{JSON.stringify(error)}</div>}
           {offers &&
@@ -48,7 +46,6 @@ const CompanyHome: React.FC = () => {
                 buttonActionName="Detalles"
               />
             ))}
-
           {/* Ejemplo de tarjetas de trabajo estáticas */}
           {/* <JobCard
                         titleJob="Senior Product Designer"

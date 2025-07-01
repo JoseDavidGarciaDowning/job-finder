@@ -22,9 +22,7 @@ import { useAuthStore } from "../stores";
 import CompanyHome from "../company/pages/CompanyHome";
 import CreateJob from "../company/pages/CreateJob";
 import JobDetail from "../applicant/pages/JobDetail";
-
-
-// Página fuera de los tabs
+import JobApplications from "../company/pages/JobApplications";
 
 const CompanyRoutes = () => {
   const isAuthenticated =
@@ -44,8 +42,7 @@ const CompanyRoutes = () => {
             <Route exact path="/company/inicio" component={CompanyHome} />
             <Route exact path="/company/postJob" component={CreateJob} />
             <Route exact path="/jobs/jobDetail/:id" component={JobDetail} />
-
-            
+            <Route exact path="/company/job-applications" component={JobApplications} />
           </Switch>
         </IonRouterOutlet>
 
@@ -62,7 +59,7 @@ const CompanyRoutes = () => {
             <IonIcon icon={bookmarkOutline} />
             <IonLabel>Guardados</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="applicants" href="/company/applicants">
+          <IonTabButton tab="applicants" href="/company/job-applications">
             <IonIcon icon={checkmarkDoneOutline} />
             <IonLabel>Aplicados</IonLabel>
           </IonTabButton>
