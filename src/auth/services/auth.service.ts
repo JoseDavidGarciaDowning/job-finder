@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/config";
 import { AllowedRoles } from "../../interfaces";
 import { http } from "../../plugins/http-client.plugin";
 
@@ -15,7 +16,7 @@ export class AuthService {
     password: string
   ): Promise<LoginResponse> => {
     try {
-      const resp = await http.post<LoginResponse>("/api/auth/login", {
+      const resp = await http.post<LoginResponse>(`${API_BASE_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -33,7 +34,7 @@ export class AuthService {
     role: AllowedRoles
   ): Promise<LoginResponse> => {
     try {
-      const resp = await http.post<LoginResponse>("/api/auth/register", {
+      const resp = await http.post<LoginResponse>(`${API_BASE_URL}/api/auth/register`, {
         email,
         password,
         currentRole: role,

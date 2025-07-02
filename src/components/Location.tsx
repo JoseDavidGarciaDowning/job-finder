@@ -5,10 +5,11 @@ import RegionInputSuggestions from "../applicant/components/RegionInputSuggestio
 
 import { useCountryCode } from "../hooks/useCountryCode";
 import { useRoleDispatcher } from "../hooks/locationDispatcher";
+import { API_BASE_URL } from "../config/config";
 
-const COUNTRY_URL = `http://localhost:3000/api/location/countries`;
-const CITY_URL = `http://localhost:3000/api/location/autocomplete`;
-const COUNTRY_ID_URL = `http://localhost:3000/api/location/countrycode`;
+const COUNTRY_URL = `${API_BASE_URL}/api/location/countries`;
+const CITY_URL = `${API_BASE_URL}/api/location/autocomplete`;
+const COUNTRY_ID_URL = `${API_BASE_URL}/api/location/countrycode`;
 type Role = "applicant" | "company" | "jobOffer" | "filterSearch";
 interface Props {
   role: Role;

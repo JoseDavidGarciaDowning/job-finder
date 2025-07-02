@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "../../config/config";
 import { Category } from "../../interfaces/category.interface";
 import { Offer, OfferSearchResults } from "../../interfaces/offer.interfaces";
 import { http } from "../../plugins/http-client.plugin";
@@ -48,7 +49,7 @@ export class ApplicantService {
   static async createBaseApplicationProfile(data: BaseApplicantProfile) {
     console.log({ data });
     try {
-      return await http.postAuth(`http://localhost:3000/api/applicant`, {
+      return await http.postAuth(`${API_BASE_URL}/api/applicant`, {
         ...data,
       });
     } catch (error) {
@@ -59,7 +60,7 @@ export class ApplicantService {
   static async getOffers():Promise<Offer[]> {
     await new Promise(resolve => setTimeout(resolve, 3000));
     try {
-      return await http.getAuth("http://localhost:3000/api/offer");
+      return await http.getAuth(`${API_BASE_URL}/api/offer`);
     } catch (error) {
       console.error("Error al obtener las ofertas:", error);
       throw error;
@@ -68,7 +69,7 @@ export class ApplicantService {
 
   static async getCategories(category: string):Promise<Category[]> {
     try {
-      return await http.getAuth(`http://localhost:3000/api/category/name/${category}`);
+      return await http.getAuth(`${API_BASE_URL}/api/category/name/${category}`);
     } catch (error) {
       console.error("Error al obtener las categorías:", error);
       throw error;
@@ -77,7 +78,7 @@ export class ApplicantService {
 
   static async getSubCategories(categoryId:string, subCategoryName:string):Promise<Category[]> {
     try {
-      return await http.getAuth(`http://localhost:3000/api/skill/by-category/${categoryId}/${subCategoryName}`);
+      return await http.getAuth(`${API_BASE_URL}/api/skill/by-category/${categoryId}/${subCategoryName}`);
     } catch (error) {
       console.error("Error al obtener las categorías:", error);
       throw error;
@@ -86,7 +87,7 @@ export class ApplicantService {
 
   static async getOffersByFilter(categoryId: string, skillId: string, salaryMin: number, salaryMax: number, workplaceType: string, workSchedule: string, regionId: string):Promise<OfferSearchResults[]> {
   
-      return await http.postAuth(`http://localhost:3000/api/offer/filter`, {
+      return await http.postAuth(`${API_BASE_URL}/api/offer/filter`, {
         categoryId,
         skillId,
         salaryMin,
